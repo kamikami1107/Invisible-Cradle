@@ -15,10 +15,15 @@ This repository contains code for the following saliency techniques:
 *   Grad-CAM ([paper](https://arxiv.org/abs/1610.02391))
 *   Blur IG ([paper](https://arxiv.org/abs/2004.03383))
 
-\*Developed by PAIR.
+And in this repository, you use to evaluate a blastocyst by them.
 
-This list is by no means comprehensive. We are accepting pull requests to add
-new methods!
+If you try it in easy, you should [this example iPython notebook](https://github.com/kamikami1107/Invisible-Cradle/blob/i-c/Examples.ipynb)
+showing these techniques is a good starting place.
+
+And you try them more, you should [this example iPython notebook](https://github.com/kamikami1107/Invisible-Cradle/blob/i-c/Examples_more.ipynb) 
+shows
+these techniques is a good starting place.
+
 
 ## Download
 
@@ -46,7 +51,7 @@ The saliency library has two subpackages:
 *	`tf1` accepts input/output tensors directly, and sets up the necessary 
 	graph operations for each method.
 
-### Core
+
 
 Each saliency mask class extends from the `CoreSaliency` base class. This class
 contains the following methods:
@@ -80,10 +85,6 @@ necessary to compute saliency masks. The description of this method and expected
 output format is in the `CoreSaliency` description, as well as separately for each method.
 
 
-##### Examples
-
-[This example iPython notebook](http://github.com/pair-code/saliency/blob/master/Examples_core.ipynb)
-showing these techniques is a good starting place.
 
 Here is a condensed example of using IG+SmoothGrad with TensorFlow 2:
 
@@ -114,76 +115,3 @@ smoothgrad_ig = ig_saliency.GetSmoothedMask(image,
 grayscale_visualization = saliency.VisualizeImageGrayscale(
     smoothgrad_ig)
 ```
-
-### TF1
-
-Each saliency mask class extends from the `TF1Saliency` base class. This class
-contains the following methods:
-
-*   `__init__(graph, session, y, x)`: Constructor of the SaliencyMask. This can
-    modify the graph, or sometimes create a new graph. Often this will add nodes
-    to the graph, so this shouldn't be called continuously. `y` is the output
-    tensor to compute saliency masks with respect to, `x` is the input tensor
-    with the outer most dimension being batch size.
-*   `GetMask(x_value, feed_dict)`: Returns a mask of the shape of non-batched
-    `x_value` given by the saliency technique.
-*   `GetSmoothedMask(x_value, feed_dict)`: Returns a mask smoothed of the shape
-    of non-batched `x_value` with the SmoothGrad technique.
-
-The visualization module contains two visualization methods:
-
-* ```VisualizeImageGrayscale(image_3d, percentile)```: Marginalizes across the
-  absolute value of each channel to create a 2D single channel image, and clips
-  the image at the given percentile of the distribution. This method returns a
-  2D tensor normalized between 0 to 1.
-* ```VisualizeImageDiverging(image_3d, percentile)```: Marginalizes across the
-  value of each channel to create a 2D single channel image, and clips the
-  image at the given percentile of the distribution. This method returns a
-  2D tensor normalized between -1 to 1 where zero remains unchanged.
-
-If the sign of the value given by the saliency mask is not important, then use
-```VisualizeImageGrayscale```, otherwise use ```VisualizeImageDiverging```. See
-the SmoothGrad paper for more details on which visualization method to use.
-
-##### Examples
-
-[This example iPython notebook](http://github.com/pair-code/saliency/blob/master/Examples_tf1.ipynb) shows
-these techniques is a good starting place.
-
-Another example of using GuidedBackprop with SmoothGrad from TensorFlow:
-
-```
-from saliency.tf1 import GuidedBackprop
-from saliency.tf1 import VisualizeImageGrayscale
-import tensorflow.compat.v1 as tf
-
-...
-# Tensorflow graph construction here.
-y = logits[5]
-x = tf.placeholder(...)
-...
-
-# Compute guided backprop.
-# NOTE: This creates another graph that gets cached, try to avoid creating many
-# of these.
-guided_backprop_saliency = GuidedBackprop(graph, session, y, x)
-
-...
-# Load data.
-image = GetImagePNG(...)
-...
-
-smoothgrad_guided_backprop =
-    guided_backprop_saliency.GetMask(image, feed_dict={...})
-
-# Compute a 2D tensor for visualization.
-grayscale_visualization = visualization.VisualizeImageGrayscale(
-    smoothgrad_guided_backprop)
-```
-
-## Conclusion/Disclaimer
-
-If you have any questions or suggestions for improvements to this library,
-please contact the owners of the `PAIR-code/saliency` repository.
-
-This is not an official Google product.
