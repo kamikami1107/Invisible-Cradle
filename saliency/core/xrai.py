@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Implementation of XRAI algorithm.
+
 Paper: https://arxiv.org/abs/1906.02825
 """
 
@@ -41,10 +42,12 @@ _FELZENSZWALB_MIN_SEGMENT_SIZE = 150
 
 def _normalize_image(im, value_range, resize_shape=None):
   """Normalize an image by resizing it and rescaling its values.
+
   Args:
       im: Input image.
       value_range: [min_value, max_value]
       resize_shape: New image shape. Defaults to None.
+
   Returns:
       Resized and rescaled image.
   """
@@ -67,8 +70,10 @@ def _get_segments_felzenszwalb(im,
                                scale_range=None,
                                dilation_rad=5):
   """Compute image segments based on Felzenszwalb's algorithm.
+
   Efficient graph-based image segmentation, Felzenszwalb, P.F.
   and Huttenlocher, D.P. International Journal of Computer Vision, 2004
+
   Args:
     im: Input image.
     resize_image: If True, the image is resized to 224,224 for the segmentation
@@ -288,6 +293,8 @@ class XRAI(CoreSaliency):
               batch_size=1,
               extra_parameters=None):
     """Applies XRAI method on an input image and returns the result saliency heatmap.
+
+
     Args:
         x_value: Input ndarray.
         call_model_function: A function that interfaces with a model to return
@@ -332,14 +339,18 @@ class XRAI(CoreSaliency):
           method. If it is None, an XRAIParameters object
           will be created with default parameters. See
           XRAIParameters for more details.
+
     Raises:
         ValueError: If algorithm type is unknown (not full or fast).
                     If the shape of `base_attribution` dosn't match the shape of
                       `x_value`.
                     If the shape of INPUT_OUTPUT_GRADIENTS doesn't match the
                       shape of x_value_batch.
+
     Returns:
         np.ndarray: A numpy array that contains the saliency heatmap.
+
+
     TODO(tolgab) Add output_selector functionality from XRAI API doc
     """
     results = self.GetMaskWithDetails(x_value,
@@ -362,6 +373,8 @@ class XRAI(CoreSaliency):
                          batch_size=1,
                          extra_parameters=None):
     """Applies XRAI method on an input image and returns detailed information.
+
+
     Args:
         x_value: Input ndarray.
         call_model_function: A function that interfaces with a model to return
@@ -406,14 +419,17 @@ class XRAI(CoreSaliency):
           method. If it is None, an XRAIParameters object
           will be created with default parameters. See
           XRAIParameters for more details.
+
     Raises:
         ValueError: If algorithm type is unknown (not full or fast).
                     If the shape of `base_attribution` dosn't match the shape of
                       `x_value`.
                     If the shape of INPUT_OUTPUT_GRADIENTS doesn't match the
                       shape of x_value_batch.
+
     Returns:
         XRAIOutput: an object that contains the output of the XRAI algorithm.
+
     TODO(tolgab) Add output_selector functionality from XRAI API doc
     """
     if extra_parameters is None:
@@ -498,6 +514,7 @@ class XRAI(CoreSaliency):
             min_pixel_diff=50,
             integer_segments=True):
     """Run XRAI saliency given attributions and segments.
+
     Args:
         attr: Source attributions for XRAI. XRAI attributions will be same size
           as the input attr.
@@ -515,6 +532,7 @@ class XRAI(CoreSaliency):
           to remove masks that completely overlap with the
           current mask.
         integer_segments: See XRAIParameters. Defaults to True.
+
     Returns:
         tuple: saliency heatmap and list of masks or an integer image with
            area ranks depending on the parameter integer_segments.
@@ -591,8 +609,10 @@ class XRAI(CoreSaliency):
                  min_pixel_diff=50,
                  integer_segments=True):
     """Run approximate XRAI saliency given attributions and segments.
+
     Note: This version does not consider mask overlap during importance ranking,
        significantly speeding up the algorithm for less accurate results.
+
     Args:
         attr: Source attributions for XRAI. XRAI attributions will be same size
           as the input attr.
@@ -608,6 +628,7 @@ class XRAI(CoreSaliency):
           to remove masks that completely overlap with the
           current mask.
         integer_segments: See XRAIParameters. Defaults to True.
+
     Returns:
         tuple: saliency heatmap and list of masks or an integer image with
           area ranks depending on the parameter integer_segments.

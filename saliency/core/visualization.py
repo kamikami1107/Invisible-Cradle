@@ -16,6 +16,7 @@ import numpy as np
 
 def VisualizeImageGrayscale(image_3d, percentile=99):
   r"""Returns a 3D tensor as a grayscale 2D tensor.
+
   This method sums a 3D tensor across the absolute value of axis=2, and then
   clips values at a given percentile.
   """
