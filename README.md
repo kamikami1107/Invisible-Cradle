@@ -41,7 +41,7 @@ pip install saliency[tf1]
 
 or for the development version:
 ```
-git clone https://github.com/pair-code/saliency
+git clone git@github.com:kamikami1107/Invisible-Cradle.git
 cd saliency
 ```
 
