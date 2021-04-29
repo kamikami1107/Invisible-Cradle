@@ -1,4 +1,4 @@
-# Saliency Methods
+# Methods
 
 ## Introduction
 
