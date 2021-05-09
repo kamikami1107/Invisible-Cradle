@@ -18,7 +18,7 @@ This repository contains code for the following saliency techniques:
 
 ## Example
 
-And in this repository, you use to evaluate a blastocyst by them.
+In this repository, you use to evaluate a blastocyst by them.
 
 If you try it in easy, you should [this example iPython notebook](https://github.com/kamikami1107/Invisible-Cradle/blob/i-c/Examples.ipynb)
 showing these techniques is a good starting place.
